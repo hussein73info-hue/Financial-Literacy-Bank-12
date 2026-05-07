@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بنك أسئلة الثقافة المالية — الصف الثاني عشر</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">📚</div>
+      <div>
+        <h1>بنك أسئلة الثقافة المالية</h1>
+        <p>الصف الثاني عشر — المركز الوطني لتطوير المناهج</p>
+      </div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat-pill">ف١: <span id="sf1">0</span></div>
+      <div class="stat-pill">ف٢: <span id="sf2">0</span></div>
+      <div class="stat-pill">الإجمالي: <span id="stotal">0</span></div>
+    </div>
+  </div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="goPage('p-bank')">📋 بنك الأسئلة</button>
+    <button class="nav-tab" onclick="goPage('p-quiz')">🎯 اختبار تفاعلي</button>
+    <button class="nav-tab" onclick="goPage('p-exams')">📝 الامتحانات</button>
+    <button class="nav-tab" onclick="goPage('p-min')">🏛️ نماذج وزارية</button>
+    <button class="nav-tab" onclick="goPage('p-browse')">🔍 تصفح</button>
+  </nav>
+</header>
+
+<div class="main">
+
+<div id="p-bank" class="page active">
+  <div class="card">
+    <div class="card-title">📚 تصفح بنك الأسئلة حسب الدروس</div>
+    <div class="sem-tabs">
+      <button class="sem-btn f1" id="sb1" onclick="selSem(1)">📘 الفصل الأول — ٥ وحدات</button>
+      <button class="sem-btn" id="sb2" onclick="selSem(2)">📗 الفصل الثاني — ٤ وحدات</button>
+    </div>
+    <div id="unit-grid" class="unit-grid"></div>
+    <select id="lesson-sel" class="fsel" onchange="selLesson()">
+      <option value="">— اختر الدرس لعرض أسئلته —</option>
+    </select>
+    <div id="bank-lesson-view"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+    <div class="card"><div class="card-title" style="color:var(--f1)">📘 تقدم الفصل الأول</div><div id="ov1"></div></div>
+    <div class="card"><div class="card-title" style="color:var(--f2)">📗 تقدم الفصل الثاني</div><div id="ov2"></div></div>
+  </div>
+</div>
+
+<div id="p-quiz" class="page">
+  <div class="card">
+    <div class="card-title">🎯 الاختبار التفاعلي — أجب وتعلّم فورياً</div>
+    <div class="quiz-setup">
+      <h3>١. اختر نطاق الاختبار</h3>
+      <div class="sem-tabs" style="margin-bottom:12px">
+        <button class="sem-btn f1" id="qsb1" onclick="qSelSem(1)">📘 الفصل الأول</button>
+        <button class="sem-btn" id="qsb2" onclick="qSelSem(2)">📗 الفصل الثاني</button>
+        <button class="sem-btn" id="qsb0" onclick="qSelSem(0)">📚 الفصلان معاً</button>
+      </div>
+      <div id="q-unit-grid" class="unit-grid" style="margin-bottom:10px"></div>
+      <select id="q-lesson-sel" class="fsel" style="margin-bottom:0">
+        <option value="all">جميع دروس الوحدات المختارة</option>
+      </select>
+    </div>
+    <div class="quiz-setup">
+      <h3>٢. اختر نمط الاختبار</h3>
+      <div class="setup-grid mb14">
+        <div class="setup-opt sel" id="mode-practice" onclick="selMode('practice')">
+          <div class="so-icon">📖</div>
+          <div class="so-name">تدريبي</div>
+          <div class="so-desc">يظهر الجواب فور الإجابة</div>
+        </div>
+        <div class="setup-opt" id="mode-exam" onclick="selMode('exam')">
+          <div class="so-icon">📝</div>
+          <div class="so-name">امتحاني</div>
+          <div class="so-desc">النتيجة في النهاية فقط</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div>
+          <label class="text-muted" style="display:block;margin-bottom:5px">عدد الأسئلة</label>
+          <select class="fsel" id="q-count" style="margin-bottom:0">
+            <option value="10">١٠ أسئلة</option>
+            <option value="20">٢٠ سؤالاً</option>
+            <option value="30">٣٠ سؤالاً</option>
+            <option value="40" selected>٤٠ سؤالاً</option>
+            <option value="0">جميع الأسئلة</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-muted" style="display:block;margin-bottom:5px">توقيت</label>
+          <select class="fsel" id="q-timer" style="margin-bottom:0">
+            <option value="0">بدون توقيت</option>
+            <option value="30">٣٠ ث / سؤال</option>
+            <option value="60" selected>دقيقة / سؤال</option>
+            <option value="90">٩٠ ث / سؤال</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-muted" style="display:block;margin-bottom:5px">ترتيب</label>
+          <select class="fsel" id="q-order" style="margin-bottom:0">
+            <option value="random" selected>عشوائي</option>
+            <option value="order">بالترتيب</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-setup" style="padding:14px 18px">
+      <h3 style="margin-bottom:10px">٣. معلومات الطالب (اختياري)</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <input class="finp" id="stu-name" placeholder="اسم الطالب..." style="margin-bottom:0">
+        <input class="finp" id="stu-class" placeholder="الشعبة..." style="margin-bottom:0">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary btn-lg" onclick="startQuiz()">🚀 ابدأ الاختبار</button>
+      <div id="quiz-avail" class="text-muted" style="display:flex;align-items:center"></div>
+    </div>
+  </div>
+</div>
+
+<div id="p-exams" class="page">
+  <div class="card">
+    <div class="card-title">📝 الامتحانات التقويمية والنهائية</div>
+    <div class="sem-tabs">
+      <button class="sem-btn f1" id="esb1" onclick="selExSem(1)">📘 الفصل الأول</button>
+      <button class="sem-btn" id="esb2" onclick="selExSem(2)">📗 الفصل الثاني</button>
+    </div>
+    <div class="et-grid" id="et-grid"></div>
+    <div id="ex-units" style="display:none">
+      <div class="text-muted mb14">📌 اختر الوحدات:</div>
+      <div id="ex-unit-cbs" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="buildExam()">🔨 توليد الامتحان</button>
+        <button class="btn btn-secondary" onclick="buildExamAll()">✨ من جميع الأسئلة</button>
+        <button class="btn btn-success" onclick="loadPrebuilt()">📄 الامتحان الجاهز</button>
+        <button class="btn btn-danger" onclick="startExamQuiz()">🎯 اختبار تفاعلي</button>
+      </div>
+    </div>
+  </div>
+  <div id="ex-prev-sec" style="display:none">
+    <div class="flex-between mb14">
+      <div class="card-title" style="margin-bottom:0">معاينة الامتحان</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleAns()">👁️ إظهار/إخفاء الإجابات</button>
+        <button class="btn btn-success btn-sm" onclick="shuffleEx()">🔀 ترتيب عشوائي</button>
+        <button class="btn btn-danger btn-sm" onclick="startExamFromPreview()">🎯 اختبر نفسك</button>
+      </div>
+    </div>
+    <div class="exam-prev printable">
+      <div class="exam-hdr" id="ex-hdr"></div>
+      <div class="exam-info" id="ex-info"></div>
+      <div class="exam-body" id="ex-body"></div>
+    </div>
+    <div id="ex-ak" style="display:none;margin-top:12px"></div>
+  </div>
+</div>
+
+<div id="p-min" class="page">
+  <div class="card">
+    <div class="card-title">🏛️ توليد النماذج الوزارية — ٤٠ سؤالاً</div>
+    <div style="background:var(--minl);border-radius:10px;padding:11px 14px;margin-bottom:16px;border:1px solid #f5b9b5;font-size:12px;line-height:1.7">
+      💡 <strong>الطريقة الأولى:</strong> من أسئلة بنك الدروس بتوزيع متوازن على الوحدات.<br>
+      💡 <strong>الطريقة الثانية:</strong> أسئلة جديدة مشابهة لنمط أسئلة الكتاب.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+      <div><label class="text-muted" style="display:block;margin-bottom:5px">نطاق الامتحان</label>
+        <select class="fsel" id="min-scope" onchange="prevDist()" style="margin-bottom:0">
+          <option value="f1">الفصل الأول فقط</option><option value="f2">الفصل الثاني فقط</option>
+          <option value="both" selected>الفصلان معاً</option>
+        </select></div>
+      <div><label class="text-muted" style="display:block;margin-bottom:5px">عدد الأسئلة</label>
+        <select class="fsel" id="min-count" style="margin-bottom:0">
+          <option value="40" selected>٤٠ سؤالاً</option><option value="30">٣٠</option><option value="25">٢٥</option>
+        </select></div>
+      <div><label class="text-muted" style="display:block;margin-bottom:5px">طريقة التوليد</label>
+        <select class="fsel" id="min-method" style="margin-bottom:0">
+          <option value="bank" selected>الطريقة الأولى — من البنك</option>
+          <option value="smart">الطريقة الثانية — توليد مشابه</option>
+          <option value="mixed">مزيج الطريقتين</option>
+        </select></div>
+      <div><label class="text-muted" style="display:block;margin-bottom:5px">اسم النموذج</label>
+        <input class="finp" id="min-name" value="النموذج الوزاري الأول" style="margin-bottom:0"></div>
+    </div>
+    <div id="dist-prev" class="mb14"></div>
+    <div class="btn-row">
+      <button class="btn btn-danger btn-lg" onclick="genMin()">🏛️ توليد النموذج الوزاري</button>
+      <button class="btn btn-outline" onclick="prevDist()">📊 معاينة التوزيع</button>
+    </div>
+  </div>
+  <div id="min-prev-sec" style="display:none">
+    <div class="flex-between mb14">
+      <div class="card-title" style="margin-bottom:0">النموذج الوزاري</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="window.print()">🖨️ طباعة</button>
+        <button class="btn btn-outline btn-sm" onclick="toggleMinAns()">👁️ الإجابات</button>
+        <button class="btn btn-success btn-sm" onclick="genMin()">🔄 نموذج آخر</button>
+        <button class="btn btn-danger btn-sm" onclick="startMinQuiz()">🎯 اختبر نفسك</button>
+      </div>
+    </div>
+    <div class="exam-prev printable" id="min-prev"></div>
+    <div id="min-ak" style="display:none;margin-top:12px"></div>
+  </div>
+</div>
+
+<div id="p-browse" class="page">
+  <div class="card">
+    <div class="card-title">🔍 تصفح وبحث في جميع الأسئلة</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+      <select class="fsel" id="br-sem" onchange="doBrowse()" style="flex:.5;margin-bottom:0">
+        <option value="all">جميع الفصول</option><option value="1">الفصل الأول</option><option value="2">الفصل الثاني</option>
+      </select>
+      <select class="fsel" id="br-unit" onchange="doBrowse()" style="flex:1;margin-bottom:0">
+        <option value="all">جميع الوحدات</option>
+      </select>
+      <input class="finp" id="br-search" placeholder="🔍 ابحث في نص الأسئلة..." oninput="doBrowse()" style="flex:2;margin-bottom:0">
+    </div>
+    <div id="br-stats" class="text-muted mb14"></div>
+    <div id="br-table"></div>
+  </div>
+</div>
+
+</div>
+
+<div id="quiz-overlay">
+  <div class="quiz-header">
+    <div class="quiz-header-inner">
+      <div>
+        <div class="quiz-title" id="quiz-title-bar">الاختبار التفاعلي</div>
+        <div class="quiz-meta" id="quiz-meta-bar"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="quiz-timer" id="quiz-timer" style="display:none">⏱ 00:00</div>
+        <button class="btn btn-outline btn-sm" style="border-color:rgba(255,255,255,.4);color:#fff" onclick="endQuizEarly()">إنهاء مبكر</button>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff" onclick="closeQuiz()">✕ إغلاق</button>
+      </div>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="quiz-prog" style="width:0%"></div></div>
+  </div>
+  <div class="quiz-body" id="quiz-body"></div>
+  <div class="quiz-nav">
+    <button class="btn btn-outline btn-sm" id="btn-prev" onclick="qNav(-1)" style="display:none">← السابق</button>
+    <div class="q-counter" id="q-counter"></div>
+    <div style="display:flex;gap:8px">
+      <button class="skip-btn" id="btn-skip" onclick="qSkip()">تخطي</button>
+      <button class="btn btn-primary btn-sm" id="btn-next" onclick="qNav(1)">التالي →</button>
+    </div>
+  </div>
+</div>
+
+<div id="results-overlay">
+  <div class="results-body">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+      <div style="font-size:16px;font-weight:700">📊 نتائج الاختبار</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-success" onclick="retryQuiz()">🔄 إعادة المحاولة</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ طباعة النتيجة</button>
+        <button class="btn btn-outline" onclick="closeResults()">✕ إغلاق</button>
+      </div>
+    </div>
+    <div id="results-content"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="questions.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
