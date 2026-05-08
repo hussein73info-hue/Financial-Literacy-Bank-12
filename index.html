@@ -71,7 +71,17 @@
   </div>
 </div>
 
-<script src="questions.js"></script>
+<script>
+fetch('questions.js')
+  .then(res => res.text())
+  .then(code => {
+    const script = document.createElement('script');
+    script.textContent = code;
+    document.body.appendChild(script);
+  });
+</script>
+
+<script src="script.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
