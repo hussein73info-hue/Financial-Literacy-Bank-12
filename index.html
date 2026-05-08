@@ -74,8 +74,13 @@
   </div>
 </div>
 
-<script src="questions.js"></script>
+<script>
+const s = document.createElement('script');
+s.src = 'questions.js?v=' + Date.now();
+document.body.appendChild(s);
+</script>
 
+<script src="script.js"></script>
 <script src="script.js"></script>
 <script src="script.js"></script>
 </body>
